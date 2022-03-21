@@ -1,12 +1,29 @@
 import { buildPalette, ThemeOptions } from "./colours";
-import { lighten } from "../utils/lighten";
-import { modal } from "./modal";
+import { lighten, brighten } from "../utils/lighten";
 import { link } from "./link";
 import { button } from "./button";
+import { textInput } from "./textInput";
 
 export const themeCommon = (palette: any, options: ThemeOptions) => {
   const dark = options.style === "dark";
-  return {
+  const defaultTransitionSpeed = 0.4;
+  const visibleElement = {
+    opacity: 1,
+    transition: `opacity ${defaultTransitionSpeed}s ease, transform ${defaultTransitionSpeed}s ease`,
+  };
+  const inVisibleElement = {
+    opacity: 0,
+    transition: `opacity ${defaultTransitionSpeed}s ease, transform ${defaultTransitionSpeed}s ease`,
+  };
+  const breakpoints = {
+    desktop: "@media screen and (min-width: 600px)",
+    mobile: "@media screen and (max-width: 600px)",
+  };
+
+  const common = {
+    ...breakpoints,
+    defaultTransitionSpeed,
+
     widthBreakpoint: "40rem",
     heightBreakpoint: "45rem",
     defaultAppSize: "62.5%", //62.5% will mean that .1rem = 1px
@@ -29,9 +46,52 @@ export const themeCommon = (palette: any, options: ThemeOptions) => {
 
     fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
 
+    chatMessage: {
+      textShadowColor: "rgba(0, 0, 0, 0.75)",
+      textShadowOffset: { width: -1, height: 1 },
+    },
+
+    animVisible: {
+      up: {
+        ...visibleElement,
+        transform: "translateY(0)",
+      },
+      down: {
+        ...visibleElement,
+        transform: "translateY(0)",
+      },
+      left: {
+        ...visibleElement,
+        transform: "translateX(0)",
+      },
+      right: {
+        ...visibleElement,
+        transform: "translateX(0)",
+      },
+    },
+    animInVisible: {
+      up: {
+        ...inVisibleElement,
+        transform: "translateY(-15px)",
+      },
+      down: {
+        ...inVisibleElement,
+        transform: "translateY(15px)",
+      },
+      left: {
+        ...inVisibleElement,
+        transform: "translateX(-15px)",
+      },
+      right: {
+        ...inVisibleElement,
+        transform: "translateX(15px)",
+      },
+    },
+
     themeColor: palette.themeColor,
 
     background: dark ? "black" : palette.lighterShade,
+    backgroundOpposite: !dark ? "black" : palette.lighterShade,
 
     shadowColor: palette.shadow,
     colorBase: palette.darkShade,
@@ -72,11 +132,16 @@ export const themeCommon = (palette: any, options: ThemeOptions) => {
     fontDefault: palette.fontDefault,
     fontSubtle: palette.fontSubtle,
     border: palette.border,
+  };
 
+  return {
+    ...common,
+    ...textInput(common),
     ...button(palette),
     ...link(palette),
-    ...modal(palette, options),
     lighten,
+    brighten,
+    palette,
   };
 };
 

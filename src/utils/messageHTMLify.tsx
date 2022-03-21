@@ -1,13 +1,9 @@
-import { colors, colorNameToRGB } from "./styleInfo";
-import { systemNick } from "../config";
-import log from "./log";
+import { IRCcolors, colorNameToRGB } from "./styleInfo";
+import React from "react";
 
 //escapes unsafe html tags
-const escapeHtml = (unsafe) => {
-  if (unsafe == null) {
-    log("MessageHTMLify was given an undefined value for checking!");
-    return "undefined";
-  }
+const escapeHtml = (unsafe: string) => {
+  if (!unsafe) return "";
   if (typeof unsafe.replace === "function") {
     return unsafe
       .replace(/&/g, "&amp;")
@@ -32,13 +28,16 @@ const escapeHtml = (unsafe) => {
 //
 
 export const messageHTMLify = (
-  message,
-  elementClassName,
-  font,
-  color,
-  source,
-  lightTheme
-) => {
+  message: string,
+  elementClassName: string,
+  font: string,
+  color: string, // the user setting, eg "blue"
+  source: string,
+  theme: any,
+  context: any
+): React.ReactNode => {
+  const { systemConfig, selectedTheme } = context;
+  const dark = selectedTheme.style === "dark";
   message = escapeHtml(message); //filter any HTML in the message
 
   let messageOutgoing = ""; //holds the outgoing message that we will build
@@ -59,13 +58,13 @@ export const messageHTMLify = (
     while ((array2 = regexSub.exec(array1[0])) !== null) {
       //iterate the matches
 
-      const color = array2[0]; //contains the matched string (color code)
+      const color: any = array2[0]; //contains the matched string (color code)
       let colorRGB;
-      if (colors[color]) {
+      if (IRCcolors(dark)[color]) {
         //check if the color code is valid in the colors array (from ./utils/styleInfo.js), otherwise use color 0
-        colorRGB = colors[color].rgbValue;
+        colorRGB = IRCcolors(dark)[color].rgbValue;
       } else {
-        colorRGB = colors[0].rgbValue;
+        colorRGB = IRCcolors(dark)[0].rgbValue;
       }
 
       if (!colorIsBackground) {
@@ -88,18 +87,17 @@ export const messageHTMLify = (
   messageOutgoing += message.substring(previousLastIndex); //assuming any tags have already been added (or there are none), add in the remainder of the message
 
   //set the style object of the p tag, based on the message's appliedFont and appliedColor properties. these are an overall style for the message - the color tags will override this for the specific section of the message where they are applied
-  let style = {
+  let style: any = {
     fontFamily: font,
-    color: "rgb(" + colorNameToRGB(color, lightTheme) + ")",
+    color: "rgb(" + colorNameToRGB(color, dark) + ")",
   };
 
-  if (lightTheme) {
-    style.textShadowColor = "rgba(0, 0, 0, 0.75)";
-    style.textShadowOffset = { width: -1, height: 1 };
+  if (theme.themeStyle === "dark") {
+    style = { ...style, ...theme.chatMessage };
   }
 
   //override the font color for system messages
-  if (source === systemNick) {
+  if (source === systemConfig.systemNick) {
     style.color = "rgb(255, 166, 0)";
   }
 

@@ -1,6 +1,6 @@
-import { logLevel } from "../config";
+const logLevel = 3;
 
-const log = (message, level = 1) => {
+const log = (message: string, level = 1) => {
   if (level >= logLevel) {
     console.log(message);
   }

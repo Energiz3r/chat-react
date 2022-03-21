@@ -1,16 +1,21 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "react-jss";
 import { buildTheme } from "./theme/theme";
 import { AppContext, defaultContext } from "./Context";
 import ChatApp from "./components/ChatApp";
+import WindowFocusHandler from "./utils/windowFocus";
+import { consoleBranding } from "./utils/brand";
 
 const Main = (): JSX.Element => {
   const { selectedTheme } = useContext(AppContext);
   const applicableTheme = buildTheme(selectedTheme);
   // @ts-ignore
   window.theme = applicableTheme; // eslint-disable-line
+  useEffect(() => {
+    //consoleBranding();
+  }, []);
   return (
     <ThemeProvider theme={applicableTheme}>
       <ChatApp />
@@ -23,6 +28,9 @@ const Context = (): JSX.Element => {
     defaultContext.selectedTheme
   );
   const [systemConfig, setSystemConfig] = useState(defaultContext.systemConfig);
+  const [newMessagesWaiting, setNewMessagesWaiting] = useState(
+    defaultContext.newMessagesWaiting
+  );
   return (
     <AppContext.Provider
       value={{
@@ -30,8 +38,11 @@ const Context = (): JSX.Element => {
         setSelectedTheme,
         systemConfig,
         setSystemConfig,
+        newMessagesWaiting,
+        setNewMessagesWaiting,
       }}
     >
+      <WindowFocusHandler />
       <Main />
     </AppContext.Provider>
   );

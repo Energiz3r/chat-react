@@ -14,12 +14,14 @@ export type DefaultContext = {
     logLevel: number;
   };
   setSystemConfig: (themeOptions: any) => void;
+  newMessagesWaiting: boolean;
+  setNewMessagesWaiting: (arg0: boolean) => void;
 };
 
 export const defaultContext: DefaultContext = {
   selectedTheme: {
-    style: "dark",
-    color: "blue",
+    style: "light",
+    color: "red",
   },
   setSelectedTheme: () => {},
   systemConfig: {
@@ -32,6 +34,8 @@ export const defaultContext: DefaultContext = {
     logLevel: 2, // 1 = all messages, 2 = error messages and chat messages only, 3 = chat messages only, 4 = no logging
   },
   setSystemConfig: () => {},
+  newMessagesWaiting: false,
+  setNewMessagesWaiting: () => {},
 };
 
 export const AppContext = createContext<DefaultContext>(defaultContext);

@@ -1,33 +1,26 @@
-import { useContext } from "react";
-import { AppContext } from "../Context";
+import { useEffect } from "react";
 import { useStyles } from "./ChatApp.styles";
 import { useTheme } from "react-jss";
+import Animate from "../utils/Animate";
+import DarkThemeToggle from "./DarkThemeToggle";
 import Welcome from "./Welcome";
+import Login from "./login/Login";
 
 const ChatApp = (): JSX.Element => {
   const theme: any = useTheme();
   const styles = useStyles({ theme });
-  const { selectedTheme, setSelectedTheme } = useContext(AppContext);
-  const updateTheme = () => {
-    setSelectedTheme({ ...selectedTheme, style: "light" });
-  };
+
   return (
     <>
-      <Welcome />
+      <Animate visible="initialOff" direction="up">
+        <Welcome />
+      </Animate>
+      <Animate visible="initialOn" direction="up">
+        <Login />
+      </Animate>
+      <DarkThemeToggle />
     </>
   );
 };
 
 export default ChatApp;
-
-// prettier-ignore
-const brand = () => {
-console.log("__________ .__                                   .__               __   ");
-console.log("\\______   \\|  |  _____   ________  ____    ____  |  |__  _____   _/  |_ ");
-console.log(" |    |  _/|  |  \\__  \\  \\___   /_/ <> \\ _/ ___\\ |  |  \\ \\__  \\  \\   __\\")
-console.log(" |    |   \\|  |__ / <> \\_ /  __/ \\  ___/ \\  \\___ |   \\  \\ / <> \\_ |  |  ")
-console.log(" |______  /|____/(____  //_____ \\ \\___  \\ \\___  ||___|__/(______/ |__|  ")
-console.log("        \\/            \\/       \\/     \\/      \\/   (C) BlazeChat 2018")
-console.log("")
-}
-brand();
