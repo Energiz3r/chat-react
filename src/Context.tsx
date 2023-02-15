@@ -20,8 +20,8 @@ export type DefaultContext = {
 
 export const defaultContext: DefaultContext = {
   selectedTheme: {
-    style: "light",
-    color: "red",
+    style: "dark",
+    color: "green",
   },
   setSelectedTheme: () => {},
   systemConfig: {

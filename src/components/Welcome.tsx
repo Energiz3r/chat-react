@@ -3,10 +3,10 @@ import { useTheme } from "react-jss";
 import Modal from "./Modal";
 
 interface Props {
-  toggleVisibility?: () => void;
+  onWelcomeClose: () => void;
 }
 
-const Welcome = ({ toggleVisibility }: Props): JSX.Element => {
+const Welcome = ({ onWelcomeClose }: Props): JSX.Element => {
   const theme = useTheme();
   const styles = useStyles({ theme });
   return (
@@ -20,7 +20,7 @@ const Welcome = ({ toggleVisibility }: Props): JSX.Element => {
         various topics, as well as the ability for users to create and register
         their own permanent chat rooms and host private chats with friends
       </p>
-      <button className={styles.button} onClick={toggleVisibility}>
+      <button className={styles.button} onClick={onWelcomeClose}>
         PROCEED
       </button>
     </Modal>

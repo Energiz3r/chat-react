@@ -29,10 +29,6 @@ export const useStyles = createUseStyles<any, any>((theme: any) => {
       },
       "& $checkmark": {
         "&:after": {
-          // left: ".9rem",
-          // top: ".5rem",
-          //width: ".5rem",
-          //height: "1rem",
           left: `${width / 3.5}rem`,
           top: `${width / 8}rem`,
           height: `${width / 2}rem`,
@@ -54,8 +50,6 @@ export const useStyles = createUseStyles<any, any>((theme: any) => {
       position: "absolute",
       top: 0,
       left: 0,
-      //height: "2.5rem",
-      //width: "2.5rem",
       height: `${width}rem`,
       width: `${width}rem`,
       backgroundColor: "#eeeeee",

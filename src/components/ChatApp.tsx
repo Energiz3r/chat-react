@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { useStyles } from "./ChatApp.styles";
 import { useTheme } from "react-jss";
 import Animate from "../utils/Animate";
@@ -10,12 +10,22 @@ const ChatApp = (): JSX.Element => {
   const theme: any = useTheme();
   const styles = useStyles({ theme });
 
+  const [showLogin, setShowLogin] = useState(false);
+
+  const onWelcomeClose = () => {
+    setShowLogin(true);
+  };
+
+  const oi = () => {
+    setShowLogin(!showLogin);
+  };
+
   return (
     <>
-      <Animate visible="initialOff" direction="up">
-        <Welcome />
+      <Animate>
+        <Welcome onWelcomeClose={onWelcomeClose} />
       </Animate>
-      <Animate visible="initialOn" direction="up">
+      <Animate visible={showLogin} direction="left">
         <Login />
       </Animate>
       <DarkThemeToggle />

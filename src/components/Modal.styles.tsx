@@ -16,17 +16,14 @@ export const useStyles = createUseStyles<any, any>((theme: any) => {
     },
     modalInner: {
       maxWidth: "100rem",
-      marginLeft: "auto",
-      marginRight: "auto",
       padding: "1rem 2rem 2rem 2rem",
       [desktop]: {
-        margin: "5%",
+        margin: "5% auto 0 auto",
       },
       [mobile]: {
         height: "100%",
         margin: 0,
       },
-      margin: "5%",
       backgroundColor: palette.baseShade,
       //borderRadius: ".5rem",
       borderTop: `.8rem solid ${

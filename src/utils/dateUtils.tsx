@@ -5,7 +5,7 @@ export const getNowTimestamp = (): number => {
 };
 
 //returns friendly date string from a timestamp eg. '2018-06-24 10:37:21'
-export const getFriendlyFromTimestamp = (timestamp: string): string => {
+export const getFriendlyFromTimestamp = (timestamp: number): string => {
   var a = new Date(timestamp);
   var year = a.getFullYear();
   var month =

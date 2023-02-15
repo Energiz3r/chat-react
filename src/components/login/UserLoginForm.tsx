@@ -1,10 +1,10 @@
 import { useState, useContext } from "react";
-import { useStyles } from "./GuestLogin.styles";
+import { useStyles } from "./UserLoginForm.styles";
 import { useTheme } from "react-jss";
 import TermsAndConditions from "./TermsAndConditions";
 import { AppContext } from "../../Context";
 
-const GuestLogin = (): JSX.Element => {
+const UserLoginForm = (): JSX.Element => {
   const { nickMinLength, nickMaxLength } = useContext(AppContext).systemConfig;
   const theme = useTheme();
   const styles = useStyles({ theme });
@@ -74,4 +74,4 @@ const GuestLogin = (): JSX.Element => {
   );
 };
 
-export default GuestLogin;
+export default UserLoginForm;

@@ -6,7 +6,8 @@ import { textInput } from "./textInput";
 
 export const themeCommon = (palette: any, options: ThemeOptions) => {
   const dark = options.style === "dark";
-  const defaultTransitionSpeed = 0.4;
+  const defaultTransitionSpeed = 0.5;
+  const animationDist = 35;
   const visibleElement = {
     opacity: 1,
     transition: `opacity ${defaultTransitionSpeed}s ease, transform ${defaultTransitionSpeed}s ease`,
@@ -72,19 +73,19 @@ export const themeCommon = (palette: any, options: ThemeOptions) => {
     animInVisible: {
       up: {
         ...inVisibleElement,
-        transform: "translateY(-15px)",
+        transform: `translateY(-${animationDist}px)`,
       },
       down: {
         ...inVisibleElement,
-        transform: "translateY(15px)",
+        transform: `translateY(${animationDist}px)`,
       },
       left: {
         ...inVisibleElement,
-        transform: "translateX(-15px)",
+        transform: `translateX(-${animationDist}px)`,
       },
       right: {
         ...inVisibleElement,
-        transform: "translateX(15px)",
+        transform: `translateX(${animationDist}px)`,
       },
     },
 

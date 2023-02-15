@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTheme, createUseStyles } from "react-jss";
 
-const useMountTransition = (isMounted: boolean, unmountDelay: number) => {
+const useMountTransition = (isMounted: boolean, delay: number) => {
   const [hasTransitionedIn, setHasTransitionedIn] = useState(false);
 
   useEffect(() => {
     let timeoutId: any;
-    const delay = unmountDelay * 1000;
-
     if (isMounted && !hasTransitionedIn) {
       setHasTransitionedIn(true);
     } else if (!isMounted && hasTransitionedIn) {
@@ -19,16 +17,10 @@ const useMountTransition = (isMounted: boolean, unmountDelay: number) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [unmountDelay, isMounted, hasTransitionedIn]);
+  }, [delay, isMounted, hasTransitionedIn]);
 
   return hasTransitionedIn;
 };
-
-interface Props {
-  children: React.ReactNode;
-  visible: "initialOn" | "initialOff" | true | false;
-  direction?: "up" | "down" | "left" | "right";
-}
 
 export const useStyles = createUseStyles<any, any>((theme: any) => {
   const { animatedClass } = theme;
@@ -39,47 +31,49 @@ export const useStyles = createUseStyles<any, any>((theme: any) => {
   };
 });
 
+interface Props {
+  children: React.ReactNode;
+  visible?: boolean;
+  direction?: "up" | "down" | "left" | "right";
+}
+
 const Animate = ({
   children,
-  visible,
+  visible = true,
   direction = "up",
 }: Props): JSX.Element => {
   const themeUnwrapped: any = useTheme();
-  const [show, setShow] = useState(visible === "initialOn" || visible === true);
-  if (visible !== "initialOn" && visible !== "initialOff") {
-    if (show !== visible) {
-      setShow(visible);
-    }
-  }
-  const transitioned = useMountTransition(
-    show,
-    themeUnwrapped.defaultTransitionSpeed
-  );
+  const delay = themeUnwrapped.defaultTransitionSpeed * 1000;
+
+  const [isMounted, setIsMounted] = useState(false);
+  const hasTransitionedIn = useMountTransition(isMounted, delay);
+
   const animatedClass =
-    transitioned && show
+    hasTransitionedIn && isMounted
       ? themeUnwrapped.animVisible[direction]
       : themeUnwrapped.animInVisible[direction];
+
   const theme = {
     ...useTheme(),
     animatedClass,
   };
-  const toggleVisibility = () => setShow(!show);
+
   const styles = useStyles({ theme });
+
+  useEffect(() => {
+    setIsMounted(visible);
+  }, [visible]);
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return (
-        <div className={styles.wrapper}>
-          {React.cloneElement(child, {
-            toggleVisibility,
-          })}
-        </div>
+        <div className={styles.wrapper}>{React.cloneElement(child, {})}</div>
       );
     }
     return child;
   });
 
-  return <>{(transitioned || show) && childrenWithProps}</>;
+  return <>{(hasTransitionedIn || isMounted) && childrenWithProps}</>;
 };
 
 export default Animate;

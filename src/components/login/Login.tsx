@@ -4,7 +4,7 @@ import { useTheme } from "react-jss";
 import Modal from "../Modal";
 import ModalTabs from "../ModalTabs";
 import Animate from "../../utils/Animate";
-import GuestLogin from "./GuestLogin";
+import GuestLoginForm from "./GuestLoginForm";
 
 const Login = (): JSX.Element => {
   const tabs = ["Guest", "Login", "Register"];
@@ -19,14 +19,14 @@ const Login = (): JSX.Element => {
       <ModalTabs tabs={tabs} onSelect={onChangeTab} />
 
       <div className="login-option-container">
-        <Animate visible={selectedTab === "Guest"}>
-          <GuestLogin />
+        <Animate visible={selectedTab === "Guest"} direction="down">
+          <GuestLoginForm />
         </Animate>
         <Animate visible={selectedTab === "Login"}>
-          {/* <LoginUserForm /> */}
+          {/* <UserLoginForm /> */}
         </Animate>
         <Animate visible={selectedTab === "Register"}>
-          {/* <LoginCreateForm /> */}
+          {/* <CreateLoginForm /> */}
         </Animate>
       </div>
 
